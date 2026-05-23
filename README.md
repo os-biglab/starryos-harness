@@ -6,42 +6,44 @@ A comprehensive Claude Code plugin for developing the TGOSKits OS framework (Arc
 
 ```
 os-biglab-plugin/
-├── .claude-plugin/
-│   └── plugin.json              # Plugin manifest
-├── skills/
-│   ├── os-debug/                # Kernel debugging skill
-│   │   ├── SKILL.md
-│   │   └── references/
-│   │       ├── panic-patterns.md    # Common panic messages & fixes
-│   │       ├── errno-table.md       # Linux errno quick reference
-│   │       └── gdb-workflow.md      # QEMU + GDB step-by-step
-│   ├── os-feature/              # Feature implementation skill
-│   │   ├── SKILL.md
-│   │   └── references/
-│   │       ├── syscall-guide.md     # StarryOS syscall patterns
-│   │       ├── module-guide.md      # ArceOS module creation
-│   │       └── driver-guide.md      # Device driver development
-│   ├── os-review/               # Code review skill
-│   │   ├── SKILL.md
-│   │   └── references/
-│   │       └── review-checklist.md  # Full OS review checklist
-│   └── os-nav/                  # Codebase navigation skill
-│       ├── SKILL.md
-│       └── references/
-│           └── module-map.md        # Module dependency graph
-├── agents/
+├── .claude-plugin/plugin.json   # Plugin manifest
+├── skills/                      # 9 skills
+│   ├── os-benchmark/            # Performance benchmarking
+│   ├── os-debug/                # Kernel debugging
+│   ├── os-evolve/               # Self-evolving orchestrator
+│   ├── os-feature/              # Feature implementation
+│   ├── os-learn/                # OS learning document generator
+│   ├── os-nav/                  # Codebase navigation
+│   ├── os-pr-workflow/          # PR preparation workflow
+│   ├── os-review/               # Code review (with anti-hallucination)
+│   ├── os-test/                 # Systematic testing
+│   ├── os-upstream-sync/        # Upstream sync (rebase/conflict/squash)
+│   └── starryos-debug/          # StarryOS-specific debug
+├── agents/                      # 5 agents
+│   ├── bug-hunter.md            # Bug discovery and classification
+│   ├── code-reviewer.md         # Read-only review agent
 │   ├── kernel-debugger.md       # Read-only diagnostic agent
 │   ├── os-architect.md          # Design + implement agent
-│   └── code-reviewer.md         # Read-only review agent
-├── hooks/
-│   └── hooks.json               # Auto-fmt on Rust file write/edit
-├── monitors/
-│   └── monitors.json            # QEMU log watcher (on os-debug)
-└── scripts/
-    ├── auto-fmt.sh              # Hook: cargo fmt on edited crate
-    ├── auto-clippy.sh           # Manual: targeted clippy check
-    ├── parse-qemu-log.py        # Analyse QEMU/OS log for errors
-    └── gen-syscall.py           # Generate syscall boilerplate
+│   └── test-generator.md        # Test case generator
+├── hooks/hooks.json             # SessionStart + PostToolUse + PreToolUse + Stop
+├── monitors/monitors.json       # QEMU log watcher
+├── scripts/                     # 8 scripts
+│   ├── abi-check.py             # Syscall ABI checker
+│   ├── activity-logger.py       # Edit/Write activity logger
+│   ├── auto-clippy.sh           # Targeted clippy check
+│   ├── auto-fmt.sh              # Auto cargo fmt on edit
+│   ├── gen-syscall.py           # Syscall boilerplate generator
+│   ├── lock-order-graph.py      # Lock order analysis + deadlock detection
+│   ├── parse-qemu-log.py        # QEMU log parser
+│   ├── pattern-scanner.py       # Pattern-based code scanner
+│   ├── pre-pr-gate.sh           # Clippy zero-warning gate for push
+│   └── session-stop.py          # Session summary generator
+└── docs/
+    ├── IMPROVEMENT-PLAN.md      # Improvement plan and roadmap
+    ├── SCENARIOS.md             # Scenario-based usage guide
+    ├── USAGE-GUIDE.md           # Detailed usage instructions
+    └── os-biglab-patterns/
+        └── patterns.json        # Evolvable detection rules
 ```
 
 ---
@@ -189,15 +191,34 @@ cargo xtask clippy --package starry-kernel
 
 ---
 
-## Installation (local dev)
+## Installation
 
 ```bash
 # Load plugin for this session
-claude --plugin-dir /workspace/os-biglab-plugin
+claude --plugin-dir /path/to/os-biglab-plugin
 
 # Or install project-scoped (persists across sessions)
-claude plugin install /workspace/os-biglab-plugin --scope project
+claude plugin install /path/to/os-biglab-plugin --scope project
 ```
+
+---
+
+## Documentation
+
+- [docs/SCENARIOS.md](docs/SCENARIOS.md) -- **场景化使用指南** (bug 调试、OS 学习、upstream 同步、PR 提交)
+- [docs/COMPARISON-REPORT.md](docs/COMPARISON-REPORT.md) -- **对比分析报告** (与参考项目的增量改进和优势)
+- [docs/USAGE-GUIDE.md](docs/USAGE-GUIDE.md) -- 详细功能说明
+- [docs/IMPROVEMENT-PLAN.md](docs/IMPROVEMENT-PLAN.md) -- 完善方案和路线图
+
+## Roadmap
+
+**全部实现完成:**
+- 10 个 Skills (os-debug, os-feature, os-learn, os-nav, os-pr-workflow, os-review, os-test, os-upstream-sync, os-benchmark, os-evolve, starryos-debug)
+- 5 个 Agents (kernel-debugger, os-architect, code-reviewer, bug-hunter, test-generator)
+- 10 个 Scripts (auto-fmt, auto-clippy, pre-pr-gate, parse-qemu-log, gen-syscall, abi-check, lock-order-graph, pattern-scanner, activity-logger, session-stop)
+- 4 个 Hooks (SessionStart, PostToolUse, PreToolUse, Stop)
+- 反幻觉协议 (7 级验证体系)
+- 场景化使用指南 (6 个核心场景)
 
 ---
 

@@ -1,7 +1,7 @@
 {
   "name": "os-biglab",
   "version": "1.0.0",
-  "description": "Comprehensive OS development assistant for TGOSKits (ArceOS / StarryOS / Axvisor). Covers kernel debugging, feature implementation, code navigation, and code review.",
+  "description": "Comprehensive OS development assistant for TGOSKits (ArceOS / StarryOS / Axvisor). Covers kernel debugging, feature implementation, code navigation, code review, OS learning, and upstream sync.",
   "author": {
     "name": "Jakeuibn",
     "email": ""

@@ -1,5 +1,15 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "chmod +x ${CLAUDE_PLUGIN_ROOT}/scripts/*.sh ${CLAUDE_PLUGIN_ROOT}/scripts/*.py 2>/dev/null; echo '[os-biglab] plugin ready'"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
@@ -7,16 +17,32 @@
           {
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/scripts/auto-fmt.sh"
+          },
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/scripts/activity-logger.py"
           }
         ]
       }
     ],
-    "SessionStart": [
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/pre-pr-gate.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "chmod +x ${CLAUDE_PLUGIN_ROOT}/scripts/auto-fmt.sh ${CLAUDE_PLUGIN_ROOT}/scripts/auto-clippy.sh ${CLAUDE_PLUGIN_ROOT}/scripts/parse-qemu-log.py ${CLAUDE_PLUGIN_ROOT}/scripts/gen-syscall.py 2>/dev/null; echo '[os-biglab] plugin ready'"
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/scripts/session-stop.py"
           }
         ]
       }

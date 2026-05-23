@@ -1,0 +1,101 @@
+[
+  {
+    "id": "negative-to-unsigned-cast",
+    "description": "Casting negative error codes to unsigned types (e.g., -1 as u32)",
+    "grep_pattern": "as\\s+(u8|u16|u32|u64|usize)",
+    "file_glob": "**/*.rs",
+    "exclude_pattern": "test|mock|example",
+    "context_lines": 2,
+    "severity": "P1",
+    "category": "Correctness",
+    "discovered_from": "starry-harness default rules"
+  },
+  {
+    "id": "ok-zero-stub",
+    "description": "Ok(0) or Ok(()) placeholder stub that silently succeeds without real implementation",
+    "grep_pattern": "Ok\\((0|\\(\\))\\)\\s*//",
+    "file_glob": "**/*.rs",
+    "exclude_pattern": "test|mock",
+    "context_lines": 3,
+    "severity": "P2",
+    "category": "Semantic",
+    "discovered_from": "starry-harness default rules"
+  },
+  {
+    "id": "catch-all-match-arm",
+    "description": "Wildcard match arm (_) that silently catches unexpected variants",
+    "grep_pattern": "_\\s*=>\\s*(Ok|return|continue|break)",
+    "file_glob": "**/*.rs",
+    "exclude_pattern": "test|mock",
+    "context_lines": 3,
+    "severity": "P2",
+    "category": "Semantic",
+    "discovered_from": "starry-harness default rules"
+  },
+  {
+    "id": "todo-fixme-hack",
+    "description": "TODO/FIXME/HACK markers indicating incomplete implementation",
+    "grep_pattern": "(TODO|FIXME|HACK|XXX)\\b",
+    "file_glob": "**/*.rs",
+    "exclude_pattern": "",
+    "context_lines": 1,
+    "severity": "P3",
+    "category": "Semantic",
+    "discovered_from": "starry-harness default rules"
+  },
+  {
+    "id": "ignored-flags-parameter",
+    "description": "Syscall implementation that accepts flags but doesn't check them",
+    "grep_pattern": "fn\\s+sys_\\w+.*flags.*\\{",
+    "file_glob": "**/*.rs",
+    "exclude_pattern": "test",
+    "context_lines": 10,
+    "severity": "P2",
+    "category": "Semantic",
+    "discovered_from": "starry-harness default rules"
+  },
+  {
+    "id": "unsafe-without-safety-comment",
+    "description": "unsafe block without a SAFETY comment explaining why it's sound",
+    "grep_pattern": "unsafe\\s*\\{",
+    "file_glob": "**/*.rs",
+    "exclude_pattern": "test|mock|examples",
+    "context_lines": 1,
+    "severity": "P2",
+    "category": "Safety",
+    "discovered_from": "starry-harness default rules"
+  },
+  {
+    "id": "read-at-write-at-mismatch",
+    "description": "Using read_volatile where write_volatile is needed, or vice versa",
+    "grep_pattern": "read_volatile|write_volatile",
+    "file_glob": "**/*.rs",
+    "exclude_pattern": "test",
+    "context_lines": 3,
+    "severity": "P0",
+    "category": "Safety",
+    "discovered_from": "starry-harness default rules"
+  },
+  {
+    "id": "assert-unsigned-on-u32",
+    "description": "assert!(x > 0) on unsigned type is always true except for 0",
+    "grep_pattern": "assert!\\(\\w+\\s*>\\s*0\\)",
+    "file_glob": "**/*.rs",
+    "exclude_pattern": "test",
+    "context_lines": 2,
+    "severity": "P1",
+    "category": "Correctness",
+    "discovered_from": "starry-harness default rules"
+  },
+  {
+    "id": "ab-ba-lock-pattern",
+    "description": "Potential AB-BA deadlock: two lock acquisitions in different order",
+    "grep_pattern": "\\.lock\\(\\).*\\.lock\\(\\)",
+    "file_glob": "**/*.rs",
+    "exclude_pattern": "test|mock",
+    "context_lines": 5,
+    "severity": "P1",
+    "category": "Concurrency",
+    "discovered_from": "starry-harness default rules"
+  }
+]

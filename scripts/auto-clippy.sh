@@ -53,6 +53,7 @@ fi
 
 [[ -n "$CRATE" ]] || exit 0
 
-cd /workspace
+REPO_ROOT="${CLAUDE_PROJECT_DIR:-$(git -C "$(dirname "$FILE")" rev-parse --show-toplevel 2>/dev/null || echo /workspace)}"
+cd "$REPO_ROOT"
 echo "[os-biglab] clippy: $CRATE"
 cargo xtask clippy --package "$CRATE"

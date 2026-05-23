@@ -53,5 +53,6 @@ EOF
 [[ -n "$CRATE" ]] || exit 0
 
 # Run cargo fmt — change to repo root first
-cd /workspace
+REPO_ROOT="${CLAUDE_PROJECT_DIR:-$(git -C "$(dirname "$FILE")" rev-parse --show-toplevel 2>/dev/null || echo /workspace)}"
+cd "$REPO_ROOT"
 cargo fmt --package "$CRATE" 2>/dev/null && echo "[os-biglab] fmt: $CRATE" || true
