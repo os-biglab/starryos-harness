@@ -1,0 +1,8 @@
+[
+  {
+    "name": "qemu-log-watcher",
+    "command": "if [ -f /tmp/os_run.log ]; then tail -f /tmp/os_run.log | grep --line-buffered -E 'panicked at|PageFault|InstructionFault|LoadFault|StoreFault|IllegalInstruction|SIGSEGV|kernel BUG|Oops|ERROR|WARN'; else echo '[os-biglab] No /tmp/os_run.log yet — start QEMU with: cargo xtask starry qemu -t riscv64 2>&1 | tee /tmp/os_run.log'; sleep 5; fi",
+    "description": "Watches /tmp/os_run.log for kernel panics, faults, and errors (activated with os-debug skill)",
+    "when": "on-skill-invoke:os-debug"
+  }
+]

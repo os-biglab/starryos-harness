@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/auto-fmt.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "chmod +x ${CLAUDE_PLUGIN_ROOT}/scripts/auto-fmt.sh ${CLAUDE_PLUGIN_ROOT}/scripts/auto-clippy.sh ${CLAUDE_PLUGIN_ROOT}/scripts/parse-qemu-log.py ${CLAUDE_PLUGIN_ROOT}/scripts/gen-syscall.py 2>/dev/null; echo '[os-biglab] plugin ready'"
+          }
+        ]
+      }
+    ]
+  }
+}

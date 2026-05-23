@@ -1,0 +1,12 @@
+{
+  "name": "os-biglab",
+  "version": "1.0.0",
+  "description": "Comprehensive OS development assistant for TGOSKits (ArceOS / StarryOS / Axvisor). Covers kernel debugging, feature implementation, code navigation, and code review.",
+  "author": {
+    "name": "Jakeuibn",
+    "email": ""
+  },
+  "repository": "https://github.com/rcore-os/tgoskits",
+  "license": "MIT",
+  "keywords": ["os", "kernel", "arceos", "starryos", "axvisor", "riscv", "aarch64", "debug", "syscall"]
+}
