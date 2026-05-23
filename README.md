@@ -194,12 +194,19 @@ cargo xtask clippy --package starry-kernel
 ## Installation
 
 ```bash
-# Load plugin for this session
+# 方式 1: 启动时加载 (每次需指定)
 claude --plugin-dir /path/to/os-biglab-plugin
 
-# Or install project-scoped (persists across sessions)
-claude plugin install /path/to/os-biglab-plugin --scope project
+# 方式 2: 持久化安装 (推荐)
+cd /path/to/tgoskits
+PLUGIN_DIR=/path/to/os-biglab-plugin
+mkdir -p .claude/skills .claude/agents
+ln -sf $PLUGIN_DIR/skills/* .claude/skills/
+ln -sf $PLUGIN_DIR/agents/* .claude/agents/
+cp $PLUGIN_DIR/hooks/hooks.json .claude/hooks.json
 ```
+
+方式 2 将插件内容链接到项目的 `.claude/` 目录，后续直接 `claude` 即可。
 
 ---
 

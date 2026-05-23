@@ -6,28 +6,47 @@
 
 ## 一、安装方式
 
-### 方式 1: 插件目录模式 (推荐开发阶段)
+### 方式 1: 启动时加载 (每次启动需指定)
 
 ```bash
-# 在 tgoskits 项目目录下启动 Claude Code
+# 在 tgoskits 项目目录下启动 Claude Code，同时加载插件
 cd /path/to/tgoskits
 claude --plugin-dir /path/to/os-biglab-plugin
 ```
 
-### 方式 2: 项目级安装
+注意: `--plugin-dir` 是 `claude` 的启动参数，每次启动都需要指定。
+
+### 方式 2: 持久化安装 (推荐)
+
+将插件内容链接到项目的 `.claude/` 目录，后续启动自动加载:
 
 ```bash
-# 在 tgoskits 项目目录下安装
-claude plugin install /path/to/os-biglab-plugin --scope project
+cd /path/to/tgoskits
+PLUGIN_DIR=/path/to/os-biglab-plugin
+
+# 创建目录 (如果不存在)
+mkdir -p .claude/skills .claude/agents
+
+# 链接 skills (10 个)
+ln -sf $PLUGIN_DIR/skills/* .claude/skills/
+
+# 链接 agents (5 个)
+ln -sf $PLUGIN_DIR/agents/* .claude/agents/
+
+# 复制 hooks 配置 (合并到现有 hooks)
+# 如果 .claude/hooks.json 已存在，需要手动合并
+cp $PLUGIN_DIR/hooks/hooks.json .claude/hooks.json
 ```
 
-安装后会在 tgoskits 项目的 `.claude/settings.json` 中添加插件引用。
-
-### 方式 3: 全局安装
-
+验证:
 ```bash
-claude plugin install /path/to/os-biglab-plugin --scope user
+ls -la .claude/skills/   # 应看到 os-debug, os-feature 等链接
+ls -la .claude/agents/   # 应看到 kernel-debugger.md 等链接
 ```
+
+安装后无需 `--plugin-dir`，直接 `cd /path/to/tgoskits && claude` 即可。
+
+注意: `claude plugin install` 仅支持已注册到 marketplace 的插件，不适用于本地插件。
 
 ---
 
@@ -513,13 +532,16 @@ docker pull ghcr.io/rcore-os/tgoskits-container:latest
 ### 插件未加载
 
 ```bash
-# 检查插件目录是否正确
-ls -la /path/to/os-biglab-plugin/.claude-plugin/plugin.json
+# 检查 skills 是否已链接到 .claude/
+ls -la .claude/skills/
+
+# 检查 agents 是否已链接到 .claude/
+ls -la .claude/agents/
 
 # 检查 hooks.json 格式
-python3 -c "import json; json.load(open('/path/to/os-biglab-plugin/hooks/hooks.json'))"
+python3 -c "import json; json.load(open('.claude/hooks.json'))"
 
-# 以调试模式启动
+# 或使用 --plugin-dir 方式启动
 claude --plugin-dir /path/to/os-biglab-plugin --verbose
 ```
 
